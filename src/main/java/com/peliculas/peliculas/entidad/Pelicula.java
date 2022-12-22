@@ -1,0 +1,146 @@
+package com.peliculas.peliculas.entidad;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
+
+@Entity
+@Table(name = "pelicula")
+public class Pelicula implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @Column(name = "imagen_ruta_pelicula")
+    private String imagen;
+    @Transient
+    private MultipartFile imagenPelicula;
+    @Column(name = "youtube_trailer")
+    private String youtubeTrailerId;
+    private String titulo;
+    private boolean eliminado = Boolean.FALSE;
+    @Column(name = "fecha_creacion")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDateTime fechaCreacion;
+    private Integer calificacion;
+    @ManyToMany(mappedBy = "peliPersonaje")
+    private List<Personaje> personajePelicula;
+    @JoinTable(name = "pelicula_genero",
+            joinColumns = @JoinColumn(name = "pelicula_id"),
+            inverseJoinColumns = @JoinColumn(name = "genero_id"))
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Genero> peliGenero;
+
+    public Pelicula() {
+    }
+
+    public Pelicula(Long id, String imagen, String youtubeTrailerId, MultipartFile imagenPelicula, String titulo, LocalDateTime fechaCreacion, Integer calificacion) {
+        this.id = id;
+        this.imagen = imagen;
+        this.youtubeTrailerId = youtubeTrailerId;
+        this.imagenPelicula = imagenPelicula;
+        this.titulo = titulo;
+        this.fechaCreacion = fechaCreacion;
+        this.calificacion = calificacion;
+    }
+
+    public Pelicula(String imagen, String youtubeTrailerId, MultipartFile imagenPelicula, String titulo, LocalDateTime fechaCreacion, Integer calificacion) {
+        this.imagen = imagen;
+        this.youtubeTrailerId = youtubeTrailerId;
+        this.imagenPelicula = imagenPelicula;
+        this.titulo = titulo;
+        this.fechaCreacion = fechaCreacion;
+        this.calificacion = calificacion;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+    public String getYoutubeTrailerId() {
+        return youtubeTrailerId;
+    }
+
+    public void setYoutubeTrailerId(String youtubeTrailerId) {
+        this.youtubeTrailerId = youtubeTrailerId;
+    }
+
+    public MultipartFile getImagenPelicula() {
+        return imagenPelicula;
+    }
+
+    public void setImagenPelicula(MultipartFile imagenPelicula) {
+        this.imagenPelicula = imagenPelicula;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public boolean isEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public Integer getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(Integer calificacion) {
+        this.calificacion = calificacion;
+    }
+
+    public List<Personaje> getPersonajePelicula() {
+        return personajePelicula;
+    }
+
+    public void setPersonajePelicula(List<Personaje> personajePelicula) {
+        this.personajePelicula = personajePelicula;
+    }
+
+    public void setPeliGenero(List<Genero> peliGenero) {
+        this.peliGenero = peliGenero;
+    }
+
+}
