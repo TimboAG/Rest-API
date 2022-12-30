@@ -1,11 +1,15 @@
 package com.peliculas.peliculas.controlador;
 
 import com.peliculas.peliculas.entidad.Genero;
+import com.peliculas.peliculas.excepciones.MiException;
 import com.peliculas.peliculas.servicio.GeneroServicio;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,53 +29,44 @@ public class GeneroControlador {
     private GeneroServicio servicioGenero;
 
     @GetMapping("/custom")
-    public List<Genero> findAllCustom() {
-        return servicioGenero.findAllCustom();
+    public ResponseEntity<List<Genero>> findAllCustom() {
+        return new ResponseEntity<>(servicioGenero.findAllCustom(), OK);
     }
 
     @GetMapping
-    public List<Genero> findAll() {
-        return servicioGenero.listar();
+    public ResponseEntity<List<Genero>> findAll() {
+        return new ResponseEntity<>(servicioGenero.listar(), OK);
     }
 
     @GetMapping("/{id}")
-    public Optional<Genero> findById(@PathVariable Long id) {
-        return servicioGenero.findById(id);
+    public ResponseEntity<Optional<Genero>> findById(@PathVariable Long id) {
+        return new ResponseEntity<>(servicioGenero.findById(id), OK);
     }
 
     @PostMapping
-    public Genero crear(@RequestBody Genero miGenero) {
-        return servicioGenero.agregar(miGenero);
+    public ResponseEntity<Genero> crear(@RequestBody Genero miGenero) {
+        return new ResponseEntity<>(servicioGenero.agregar(miGenero), CREATED);
     }
 
     @PutMapping("/{id}")
-    public Genero actualizar(@PathVariable Long id, @RequestBody Genero miGenero) {
+    public ResponseEntity<Genero> actualizar(@PathVariable Long id, @RequestBody Genero miGenero) {
         miGenero.setId(id);
-        return servicioGenero.actualizar(miGenero);
+        return new ResponseEntity<>(servicioGenero.actualizar(miGenero), OK);
     }
 
     @DeleteMapping("/{id}")
-    public Genero eliminar(@PathVariable Long id) throws Exception {
-        return servicioGenero.eliminar(id);
+    public ResponseEntity<Genero> eliminar(@PathVariable Long id) throws MiException {
+        return new ResponseEntity<>(servicioGenero.eliminar(id), NO_CONTENT);
     }
 
     @PutMapping("/alta/{id}")
-    public Genero alta(@PathVariable Long id) {
-        try {
-            return servicioGenero.alta(id);
-        } catch (Exception e) {
-            System.err.println("error");
-        }
-        return null;
+    public ResponseEntity<Genero> alta(@PathVariable Long id) throws Exception {
+        return new ResponseEntity<>(servicioGenero.alta(id), OK);
     }
 
     @PutMapping("/baja/{id}")
-    public Genero baja(@PathVariable Long id) throws Exception {
-        try {
-            return servicioGenero.baja(id);
-        } catch (Exception e) {
-            System.err.println("error");
-        }
-        return null;
+    public ResponseEntity<Genero> baja(@PathVariable Long id) throws Exception {
+        return new ResponseEntity<>(servicioGenero.baja(id), OK);
     }
+
 }
