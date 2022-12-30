@@ -32,8 +32,20 @@ public class GeneroServicio {
     }
 
     @Transactional
-    public Genero buscarId(Long id) {
-        return generoRepositorio.unGeneroId(id);
+    public Genero buscarId(Long id) throws MiException {
+        System.out.println("Esto es id genero" + id);
+        Optional<Genero> miOptional = generoRepositorio.findById(id);
+        try {
+            Genero miObj = new Genero();
+            if (miOptional.isPresent()) {
+                 miObj = miOptional.get();
+                return miObj;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            throw new MiException("Error verifique si el elemnto ");
+        }
     }
 
     @Transactional

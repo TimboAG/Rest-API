@@ -3,12 +3,14 @@ package com.peliculas.peliculas.controlador;
 import com.peliculas.peliculas.entidad.Genero;
 import com.peliculas.peliculas.entidad.Pelicula;
 import com.peliculas.peliculas.entidad.Personaje;
+import com.peliculas.peliculas.excepciones.MiException;
 import com.peliculas.peliculas.servicio.GeneroServicio;
 import com.peliculas.peliculas.servicio.PeliculaServicio;
 import com.peliculas.peliculas.servicio.PersonajeServicio;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/pelicula")
+@CrossOrigin("*")
+
 public class PeliculaControlador {
 
     @Autowired
@@ -56,11 +60,17 @@ public class PeliculaControlador {
 //        }
 //        return null;
 //    }
+//    @PostMapping("/{idG}/{idP}")
+//    public Pelicula crear(@RequestBody Pelicula miPelicula, @PathVariable Long idG, @PathVariable Long idP) throws MiException {
+//        return peliculaServicio.agregar(miPelicula, idG, idP);
+//    }
     @PostMapping
-    public Pelicula crear(@RequestBody Pelicula miPelicula) {
+    public Pelicula crear(@RequestBody Pelicula miPelicula) throws MiException {
         return peliculaServicio.agregar(miPelicula);
     }
 
+    
+    
     @PutMapping("/{id}")
     public Pelicula actualizar(@PathVariable Long id, @RequestBody Pelicula miPelicula) {
         miPelicula.setId(id);

@@ -52,6 +52,20 @@ public class PersonajeServicio {
     }
 
     @Transactional
+    public Personaje buscarId(Long id) throws MiException {
+        Optional<Personaje> miOptional = personajeRepositorio.unPersonajeId(id);
+        try {
+            if (miOptional.isPresent()) {
+                Personaje miObjPers = miOptional.get();
+                return miObjPers;
+            }
+        } catch (Exception e) {
+            throw new MiException("Error verifique si el elemnto ");
+        }
+        return null;
+    }
+
+    @Transactional
     public Personaje actualizar(Personaje miPersonaje) {
         Personaje objPersonaje = personajeRepositorio.getById(miPersonaje.getId());
         BeanUtils.copyProperties(miPersonaje, objPersonaje);

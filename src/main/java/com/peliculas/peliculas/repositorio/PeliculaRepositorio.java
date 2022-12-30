@@ -14,4 +14,6 @@ public interface PeliculaRepositorio extends JpaRepository<Pelicula, Long> {
     public List<Pelicula> findAllCustom();
 
     public Optional<Pelicula> findById(Long id);
+
+
 }

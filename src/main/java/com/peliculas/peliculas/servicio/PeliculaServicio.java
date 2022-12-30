@@ -7,8 +7,12 @@ import com.peliculas.peliculas.excepciones.MiException;
 import com.peliculas.peliculas.repositorio.GeneroRepositorio;
 import com.peliculas.peliculas.repositorio.PeliculaRepositorio;
 import com.peliculas.peliculas.repositorio.PersonajeRepositorio;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +23,13 @@ public class PeliculaServicio {
 
     @Autowired
     private PeliculaRepositorio peliculaRepositorio;
-     @Autowired
-    private GeneroRepositorio generoRepositorio;
 
-     @Autowired
-    private PersonajeRepositorio personajeRepositorio; 
-     
+    @Autowired
+    private GeneroServicio generoServicio;
+
+    @Autowired
+    private PersonajeServicio personajeServicio;
+
     @Transactional
     public List<Pelicula> findAllCustom() {
         return peliculaRepositorio.findAllCustom();
@@ -39,16 +44,21 @@ public class PeliculaServicio {
     public Optional<Pelicula> findById(Long id) {
         return peliculaRepositorio.findById(id);
     }
-    
-//        @Transactional
-//    public Pelicula agregar(Pelicula miPelicula, Long idGenero, Long idPersonaje) {
-//        List<Genero> miListGenero = generoRepositorio.findByIdUnGenero(idGenero);
-//        List<Personaje> miListPersonaje = personajeRepositorio.findByUnPersonaje(idPersonaje);
-//        miPelicula.setPeliGenero(miListGenero);
-//        miPelicula.setPersonajePelicula(miListPersonaje);
+
+//    @Transactional
+//    public Pelicula agregar(Pelicula miPelicula, Long idGenero, Long idPersonaje) throws MiException {
+//                System.out.println("Esto es id genero desde gregar pelicula" + idGenero);
+//
+//        Set<Genero> miListG = new HashSet();
+//        Set<Personaje> miListP = new HashSet();
+//        Genero miGenero = generoServicio.buscarId(idGenero);
+//        Personaje miPersonaje = personajeServicio.buscarId(idGenero);
+//        miListG.add(miGenero);
+//        miListP.add(miPersonaje);
+//        miPelicula.setPeliGenero(miListG);
+//        miPelicula.setPersonajePelicula(miListP);
 //        return peliculaRepositorio.save(miPelicula);
 //    }
-
     @Transactional
     public Pelicula agregar(Pelicula miPelicula) {
         return peliculaRepositorio.save(miPelicula);
@@ -61,6 +71,7 @@ public class PeliculaServicio {
         return peliculaRepositorio.save(miObjPeli);
     }
 
+  
     @Transactional
     public Pelicula eliminar(Long id) throws MiException {
         Optional<Pelicula> miOptional = peliculaRepositorio.findById(id);
@@ -101,4 +112,5 @@ public class PeliculaServicio {
         }
         return null;
     }
+
 }

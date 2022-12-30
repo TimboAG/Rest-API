@@ -1,7 +1,11 @@
 package com.peliculas.peliculas.entidad;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Id;
 import javax.persistence.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,11 +26,12 @@ public class Personaje implements Serializable {
     private Double peso;
     private String historia;
     private boolean eliminado = Boolean.FALSE;
-     @ManyToMany
+    @ManyToMany
+    @JsonBackReference
     @JoinTable(name = "personaje_pelicula_join",
             joinColumns = @JoinColumn(name = "personaje_id"),
-            inverseJoinColumns = @JoinColumn(name = "pelicula_id"))   
-    private List<Pelicula> peliPersonaje;
+            inverseJoinColumns = @JoinColumn(name = "pelicula_id"))
+    private Set<Pelicula> peliPersonaje = new HashSet();
 
     public Personaje() {
     }
@@ -114,11 +119,11 @@ public class Personaje implements Serializable {
         this.eliminado = eliminado;
     }
 
-    public List<Pelicula> getPeliPersonaje() {
+    public Set<Pelicula> getPeliPersonaje() {
         return peliPersonaje;
     }
 
-    public void setPeliPersonaje(List<Pelicula> peliPersonaje) {
+    public void setPeliPersonaje(Set<Pelicula> peliPersonaje) {
         this.peliPersonaje = peliPersonaje;
     }
 

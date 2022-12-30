@@ -1,7 +1,10 @@
 package com.peliculas.peliculas.entidad;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,17 +43,16 @@ public class Genero implements Serializable {
     private boolean eliminado = Boolean.FALSE;
     @ManyToMany(mappedBy = "peliGenero")
     @Column(name = "pelicula_genero")
-    private List<Pelicula> peliculaGenero;
+    private Set<Pelicula> peliculaGenero = new HashSet();
 
     public Genero() {
     }
 
-    public Genero(Long id, String rutaImagen, MultipartFile imagen, String genero, List<Pelicula> peliculaGenero) {
+    public Genero(Long id, String rutaImagen, MultipartFile imagen, String genero) {
         this.id = id;
         this.rutaImagen = rutaImagen;
         this.imagen = imagen;
         this.genero = genero;
-        this.peliculaGenero = peliculaGenero;
     }
 
     public Long getId() {
@@ -93,11 +95,11 @@ public class Genero implements Serializable {
         this.eliminado = eliminado;
     }
 
-    public List<Pelicula> getPeliculaGenero() {
+    public Set<Pelicula> getPeliculaGenero() {
         return peliculaGenero;
     }
 
-    public void setPeliculaGenero(List<Pelicula> peliculaGenero) {
+    public void setPeliculaGenero(Set<Pelicula> peliculaGenero) {
         this.peliculaGenero = peliculaGenero;
     }
 

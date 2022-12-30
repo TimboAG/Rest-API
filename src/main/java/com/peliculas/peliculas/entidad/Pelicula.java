@@ -1,9 +1,13 @@
 package com.peliculas.peliculas.entidad;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,12 +42,13 @@ public class Pelicula implements Serializable {
     private LocalDateTime fechaCreacion;
     private Integer calificacion;
     @ManyToMany(mappedBy = "peliPersonaje")
-    private List<Personaje> personajePelicula;
+    private Set<Personaje> personajePelicula;
     @JoinTable(name = "pelicula_genero",
             joinColumns = @JoinColumn(name = "pelicula_id"),
             inverseJoinColumns = @JoinColumn(name = "genero_id"))
     @ManyToMany(fetch = FetchType.LAZY)
-    private List<Genero> peliGenero;
+    @JsonBackReference
+    private Set<Genero> peliGenero = new HashSet();
 
     public Pelicula() {
     }
@@ -131,15 +136,19 @@ public class Pelicula implements Serializable {
         this.calificacion = calificacion;
     }
 
-    public List<Personaje> getPersonajePelicula() {
+    public Set<Personaje> getPersonajePelicula() {
         return personajePelicula;
     }
 
-    public void setPersonajePelicula(List<Personaje> personajePelicula) {
+    public void setPersonajePelicula(Set<Personaje> personajePelicula) {
         this.personajePelicula = personajePelicula;
     }
 
-    public void setPeliGenero(List<Genero> peliGenero) {
+    public Set<Genero> getPeliGenero() {
+        return peliGenero;
+    }
+
+    public void setPeliGenero(Set<Genero> peliGenero) {
         this.peliGenero = peliGenero;
     }
 
